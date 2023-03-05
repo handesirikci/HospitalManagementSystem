@@ -1,0 +1,81 @@
+syntax = "proto3";
+option java_multiple_files = true;
+package com.example;
+
+message Hospital {
+  int64 id = 1;
+  string name = 2;
+  repeated Patient registeredPatients = 3;
+}
+
+message Patient {
+  int64 id = 1;
+  int32 nationalIdNumber = 2;
+  repeated Hospital registeredHospitals = 3;
+}
+
+message PatientNationalId {
+  int64 id = 1;
+}
+
+message HospitalName {
+  string name = 3;
+}
+
+message CreateHospitalRequest {
+  string name = 1;
+}
+
+message CreatePatientRequest {
+  int32 nationalIdNumber = 1;
+}
+
+message DeleteHospitalRequest {
+  string name = 1;
+}
+
+message DeletePatientRequest {
+  int32 nationalIdNumber = 1;
+}
+
+message DeleteResponse {
+  bool isDeleted = 1;
+}
+
+message RegisterRequest {
+  int32 patientNationalIdNumber = 1;
+  string hospitalName = 2;
+}
+
+message RegisterResponse {
+  bool isRegistered = 1;
+}
+
+message PatientListRequest {
+  int32 patientNationalIdNumber = 1;
+}
+
+message HospitalListRequest {
+  string hospitalName = 1;
+}
+
+message PatientListResponse {
+  repeated int32 registeredPatientsNationalIds = 1;
+}
+
+message HospitalListResponse {
+  repeated string registeredHospitalNames = 1;
+}
+
+service HospitalManagementService {
+  rpc createHospital(CreateHospitalRequest) returns (Hospital) {};
+  rpc createPatient(CreatePatientRequest) returns (Patient) {};
+  rpc updateHospital(Hospital) returns (Hospital) {};
+  rpc updatePatient(Patient) returns (Patient) {};
+  rpc deleteHospital(DeleteHospitalRequest) returns (DeleteResponse) {};
+  rpc deletePatient(DeletePatientRequest) returns (DeleteResponse) {};
+  rpc registerPatientToHospital(RegisterRequest) returns (RegisterResponse) {};
+  rpc listRegisteredHospitals(PatientListRequest) returns (HospitalListResponse) {};
+  rpc listRegisteredPatients(HospitalListRequest) returns (PatientListResponse) {};
+}
+
